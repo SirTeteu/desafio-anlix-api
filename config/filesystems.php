@@ -56,6 +56,10 @@ return [
             'throw' => false,
         ],
 
+        'seeds' => [
+            'driver' => 'local',
+            'root' => database_path('seeders/seeds'),
+        ],
     ],
 
     /*

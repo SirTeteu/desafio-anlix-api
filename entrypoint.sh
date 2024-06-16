@@ -11,5 +11,7 @@ composer install
 echo "Migrating tables"
 php artisan migrate
 
+echo "Seeding tables"
+php artisan db:seed
 
 exec "$@"
