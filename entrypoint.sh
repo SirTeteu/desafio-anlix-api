@@ -8,4 +8,8 @@ ENV_FILE="/var/www/.env"
 echo "Installing project dependencies"
 composer install
 
+echo "Migrating tables"
+php artisan migrate
+
+
 exec "$@"
