@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'paciente'], function () {
     Route::get("index", [PacienteController::class, "index"]);
     Route::get("index-by-date", [PacienteController::class, "indexByDate"]);
+    Route::get("{pacienteId}", [PacienteController::class, "detail"]);
 });

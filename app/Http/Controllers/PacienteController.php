@@ -46,4 +46,20 @@ class PacienteController extends Controller
         return PacienteResource::collection($pacientes);
     }
 
+    /**
+     * Detalha o paciente junto com os indices pulmonar e cardiaco
+     * mais recentes
+     *
+     * @param int $pacienteId
+     * @return PacienteResource
+     */
+    public function detail($pacienteId) {
+        $paciente = Paciente::where('id', $pacienteId)
+            ->with('latestCardiacoIndice')
+            ->with('latestPulmonarIndice')
+            ->get();
+
+        return PacienteResource::collection($paciente);
+    }
+
 }
