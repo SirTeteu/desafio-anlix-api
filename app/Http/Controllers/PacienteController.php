@@ -104,4 +104,58 @@ class PacienteController extends Controller
         return PacienteResource::collection($pacientes);
     }
 
+    /**
+     * Detalha os indices registrados dentro de um range de datas para um paciente
+     *
+     * @param Request $request
+     * @param int $pacienteId
+     * @return PacienteResource
+     */
+    public function detailDateRange(Request $request, $pacienteId) {
+
+        // validando se as data foram passadas no parametro
+        if (!$request->has('data_inicio') || !$request->has('data_fim')) {
+            return response()->json(['msg' => 'A(s) data(s) não foram passadas corretamente.'], 500);
+        }
+
+        $data_inicio = $request->input('data_inicio');
+        $data_fim = $request->input('data_fim');
+
+        // validando se as datas foram passadas no formato correto
+        try {
+            $date = @Carbon::parse($data_inicio);
+            $date = @Carbon::parse($data_fim);
+        } catch (InvalidFormatException $e) {
+            return response()->json(['msg' => 'O formato da data deve ser yyyy-mm-dd.'], 500);
+        }
+
+        $paciente = Paciente::where('id', $pacienteId);
+        
+        // pelo menos o cardiaco-indice ou pulmonar-indice sempre devem ser passados
+        if ($request->has('cardiaco-indice') && 
+            $request->input('cardiaco-indice') == 1) {
+            
+                // selecionando os indices das datas indicadas
+                $paciente = $paciente->with(['cardiacoIndices' => function ($q) use ($data_inicio, $data_fim) {
+                    $q->whereBetween('data', [$data_inicio, $data_fim]);
+                }]);
+        
+        } else if ($request->has('pulmonar-indice') && 
+            $request->input('pulmonar-indice') == 1) {
+            
+                // selecionando os indices das datas indicadas
+                $paciente = $paciente->with(['pulmonarIndices' => function ($q) use ($data_inicio, $data_fim) {
+                    $q->whereBetween('data', [$data_inicio, $data_fim]);
+                }]);
+        
+        } else {
+            return response()->json(['msg' => 'Nenhuma característica foi selecionada.'], 500);
+
+        }
+
+        $paciente = $paciente->get();
+
+        return PacienteResource::collection($paciente);
+    }
+
 }
