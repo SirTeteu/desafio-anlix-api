@@ -62,4 +62,46 @@ class PacienteController extends Controller
         return PacienteResource::collection($paciente);
     }
 
+    /**
+     * Lista os pacientes com indices pulmonares ou cardiacos
+     * registrados no range de datas selecionado
+     *
+     * @param Request $request
+     * @return PacienteResource
+     */
+    public function indexByDate(Request $request) {
+        
+        // validando se a data foi passada no parametro
+        if (!$request->has('data')) {
+            return response()->json(['msg' => 'A data não foi passada corretamente.'], 500);
+        }
+
+        $data = $request->input('data');
+
+        // validando se a data foi passada no formato correto
+        try {
+            $date = @Carbon::parse($data);
+        } catch (InvalidFormatException $e) {
+            return response()->json(['msg' => 'O formato da data deve ser yyyy-mm-dd.'], 500);
+            
+        }
+
+        // selecionando apenas pacientes com caracteristicas existentes na data indicada
+        $pacientes = Paciente::whereHas('cardiacoIndices', function ($q) use ($data) {
+                $q->where('data', $data);
+            })->orWhereHas('pulmonarIndices', function ($q) use ($data) {
+                $q->where('data', $data);
+            })->with(['cardiacoIndices' => function ($q) use ($data) {
+                $q->where('data', $data);
+            }])->with(['pulmonarIndices' => function ($q) use ($data) {
+                $q->where('data', $data);
+            }])->get();
+
+        if (count($pacientes) == 0) {
+            return response()->json(['msg' => 'Nenhum paciente para a data fornecida.'], 500);
+        }
+
+        return PacienteResource::collection($pacientes);
+    }
+
 }
