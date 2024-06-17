@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::group(['prefix' => 'paciente'], function () {
     Route::get("index", [PacienteController::class, "index"]);
     Route::get("index-by-date", [PacienteController::class, "indexByDate"]);
     Route::get("{pacienteId}/detail-date-range", [PacienteController::class, "detailDateRange"]);
+    Route::get("{pacienteId}/detail-latest-in-date-range", [PacienteController::class, "detailLateDateRange"]);
     Route::get("{pacienteId}", [PacienteController::class, "detail"]);
 });
