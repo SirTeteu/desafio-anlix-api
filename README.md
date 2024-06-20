@@ -27,6 +27,11 @@ Detalha os dados de um paciente com os indices cardiaco e pulmonar mais recentes
 ````
 
 ````
+http://localhost:8000/api/paciente/{pacienteId}/detail-last-indices
+Detalha os dados de um paciente com os 30 indices cardiaco e pulmonar mais recentes
+````
+
+````
 http://localhost:8000/api/paciente/index-by-date
 Lista todos os pacientes que possuem indices registrados em um dia. Para utilizá-la é necessário passar o parâmetro *data* no formato yyyy-mm-dd
 ````
