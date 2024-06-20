@@ -64,6 +64,17 @@ class PacienteController extends Controller
         return PacienteResource::collection($paciente);
     }
 
+    public function detailLastIndices($pacienteId) {
+        $paciente = Paciente::where('id', $pacienteId)
+            ->with(['cardiacoIndices' => function ($q) {
+                $q->orderBy('data', 'desc')->orderBy('id', 'desc')->limit(30);
+            }])->with(['pulmonarIndices' => function ($q) {
+                $q->orderBy('data', 'desc')->orderBy('id', 'desc')->limit(30);
+            }])->get();
+
+        return PacienteResource::collection($paciente);
+    }
+
     /**
      * Lista os pacientes com indices pulmonares ou cardiacos
      * registrados no range de datas selecionado
