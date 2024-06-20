@@ -8,7 +8,7 @@ cp .env-example .env
 ````
 
 Iniciar aplicação  
-``sudo docker compose up --build`` ou ``sudo docker compose up -d --build``
+``sudo docker compose up`` ou ``sudo docker compose up -d``
 
 # Rotas de API
 
