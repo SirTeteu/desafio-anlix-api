@@ -34,15 +34,15 @@ class PacienteResource extends JsonResource
             'estado' => $this->estado,
             'telefone_fixo' => $this->telefone_fixo,
             'celular' => $this->celular,
-            'altura' => $this->altura,
+            'altura' => round($this->altura, 2),
             'peso' => $this->peso,   
             'tipo_sanguineo' => $this->tipo_sanguineo,
             'cor' => $this->cor,
 
-            'cardiacoIndices' => IndiceCardiacoResource::collection($this->whenLoaded('cardiacoIndices')),
-            'pulmonarIndices' => IndicePulmonarResource::collection($this->whenLoaded('pulmonarIndices')),
-            'latestCardiacoIndice' => new IndiceCardiacoResource($this->whenLoaded('latestCardiacoIndice')),
-            'latestPulmonarIndice' => new IndicePulmonarResource($this->whenLoaded('latestPulmonarIndice'))
+            'cardiaco_indices' => IndiceCardiacoResource::collection($this->whenLoaded('cardiacoIndices')),
+            'pulmonar_indices' => IndicePulmonarResource::collection($this->whenLoaded('pulmonarIndices')),
+            'latest_cardiaco_indice' => new IndiceCardiacoResource($this->whenLoaded('latestCardiacoIndice')),
+            'latest_pulmonar_indice' => new IndicePulmonarResource($this->whenLoaded('latestPulmonarIndice'))
         ];
 
     }
