@@ -35,7 +35,9 @@ class PacienteController extends Controller
             $request->input('latest-cardiaco-indice') == 1) {
             
                 $pacientes = $pacientes->with('latestCardiacoIndice');
-        }   else if ($request->has('latest-pulmonar-indice') && 
+        } 
+        
+        if ($request->has('latest-pulmonar-indice') && 
             $request->input('latest-pulmonar-indice') == 1) {
                 // se o paramentro latest-pulmonar-indice for passado na request
                 // entao acrescenta na resposta o indice pulmonar mais recente
